@@ -57,11 +57,15 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Tables" />
+    <Folder Include="Scripts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Customer.sql" />
     <Build Include="Tables\Interest.sql" />
     <Build Include="Tables\Record.sql" />
     <Build Include="Tables\Order.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts\SampleData.PostDeployment.sql" />
   </ItemGroup>
 </Project>
