@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="FinalChallengeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustNo" />
+          </Key>
+          <Property Name="CustNo" Type="int" Nullable="false" />
+          <Property Name="CustName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CustAddress" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CustPcode" Type="int" Nullable="false" />
+          <Property Name="InterestCode" Type="nchar" MaxLength="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Interest">
+          <Key>
+            <PropertyRef Name="InterestCode" />
+          </Key>
+          <Property Name="InterestCode" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="InterestDesc" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="CustNo" />
+            <PropertyRef Name="RecordID" />
+            <PropertyRef Name="DateOrdered" />
+          </Key>
+          <Property Name="CustNo" Type="int" Nullable="false" />
+          <Property Name="RecordID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="DateOrdered" Type="date" Nullable="false" />
+          <Property Name="Price" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Record">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Performer" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Customer__Intere__4F7CD00D">
+          <End Role="Interest" Type="Self.Interest" Multiplicity="1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Interest">
+              <PropertyRef Name="InterestCode" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="InterestCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Order__CustNo__5070F446">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustNo" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="CustNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Order__RecordID__5165187F">
+          <End Role="Record" Type="Self.Record" Multiplicity="1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Record">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="RecordID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FinalChallengeModelStoreContainer">
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Interest" EntityType="Self.Interest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Record" EntityType="Self.Record" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Customer__Intere__4F7CD00D" Association="Self.FK__Customer__Intere__4F7CD00D">
+            <End Role="Interest" EntitySet="Interest" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Order__CustNo__5070F446" Association="Self.FK__Order__CustNo__5070F446">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Order__RecordID__5165187F" Association="Self.FK__Order__RecordID__5165187F">
+            <End Role="Record" EntitySet="Record" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FinalChallengeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustNo" />
+          </Key>
+          <Property Name="CustNo" Type="Int32" Nullable="false" />
+          <Property Name="CustName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CustAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CustPcode" Type="Int32" Nullable="false" />
+          <Property Name="InterestCode" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Interest" Relationship="Self.FK__Customer__Intere__4F7CD00D" FromRole="Customer" ToRole="Interest" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK__Order__CustNo__5070F446" FromRole="Customer" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="Interest">
+          <Key>
+            <PropertyRef Name="InterestCode" />
+          </Key>
+          <Property Name="InterestCode" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="InterestDesc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Customers" Relationship="Self.FK__Customer__Intere__4F7CD00D" FromRole="Interest" ToRole="Customer" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="CustNo" />
+            <PropertyRef Name="RecordID" />
+            <PropertyRef Name="DateOrdered" />
+          </Key>
+          <Property Name="CustNo" Type="Int32" Nullable="false" />
+          <Property Name="RecordID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DateOrdered" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK__Order__CustNo__5070F446" FromRole="Order" ToRole="Customer" />
+          <NavigationProperty Name="Record" Relationship="Self.FK__Order__RecordID__5165187F" FromRole="Order" ToRole="Record" />
+        </EntityType>
+        <EntityType Name="Record">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Performer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK__Order__RecordID__5165187F" FromRole="Record" ToRole="Order" />
+        </EntityType>
+        <Association Name="FK__Customer__Intere__4F7CD00D">
+          <End Role="Interest" Type="Self.Interest" Multiplicity="1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Interest">
+              <PropertyRef Name="InterestCode" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="InterestCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Order__CustNo__5070F446">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustNo" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="CustNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Order__RecordID__5165187F">
+          <End Role="Record" Type="Self.Record" Multiplicity="1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Record">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="RecordID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FinalChallengeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Interests" EntityType="Self.Interest" />
+          <EntitySet Name="Orders" EntityType="Self.Order" />
+          <EntitySet Name="Records" EntityType="Self.Record" />
+          <AssociationSet Name="FK__Customer__Intere__4F7CD00D" Association="Self.FK__Customer__Intere__4F7CD00D">
+            <End Role="Interest" EntitySet="Interests" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Order__CustNo__5070F446" Association="Self.FK__Order__CustNo__5070F446">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Order__RecordID__5165187F" Association="Self.FK__Order__RecordID__5165187F">
+            <End Role="Record" EntitySet="Records" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FinalChallengeModelStoreContainer" CdmEntityContainer="FinalChallengeEntities">
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="FinalChallengeModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="CustNo" ColumnName="CustNo" />
+                <ScalarProperty Name="CustName" ColumnName="CustName" />
+                <ScalarProperty Name="CustAddress" ColumnName="CustAddress" />
+                <ScalarProperty Name="CustPcode" ColumnName="CustPcode" />
+                <ScalarProperty Name="InterestCode" ColumnName="InterestCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Interests">
+            <EntityTypeMapping TypeName="FinalChallengeModel.Interest">
+              <MappingFragment StoreEntitySet="Interest">
+                <ScalarProperty Name="InterestCode" ColumnName="InterestCode" />
+                <ScalarProperty Name="InterestDesc" ColumnName="InterestDesc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="FinalChallengeModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="CustNo" ColumnName="CustNo" />
+                <ScalarProperty Name="RecordID" ColumnName="RecordID" />
+                <ScalarProperty Name="DateOrdered" ColumnName="DateOrdered" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Records">
+            <EntityTypeMapping TypeName="FinalChallengeModel.Record">
+              <MappingFragment StoreEntitySet="Record">
+                <ScalarProperty Name="RecordID" ColumnName="RecordID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Performer" ColumnName="Performer" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
